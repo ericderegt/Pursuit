@@ -6,9 +6,15 @@ Rails.application.routes.draw do
   root 'welcome#index'
   get 'signup' => 'users#new'
   get 'login' => 'sessions#new'
-  post 'login' => 'sessions#new'
+  post 'login' => 'sessions#create'
   delete 'logout' => 'sessions#destroy'
   resources :users, only: [:new, :create]
+
+  namespace :api do
+    resource :users, only: [:show]
+    resources :courses, only: [:index]
+    resources :chapters, only: [:index]
+  end
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

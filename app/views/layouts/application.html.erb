@@ -6,9 +6,31 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <nav class="ui fixed menu large navbar">
+    <div class="header item">Pursuit</div> 
+    <a href="/" class="item">Home</a>
+    <a href="/" class="item">Settings</a>
 
-<%= yield %>
-
+    <div class="right menu">
+    <% if @current_user %>
+      <form action="/logout" method="POST">
+        <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+        <input name="_method" type="hidden" value="delete" />
+        <input type="submit" class="ui small button item" value="Log Out">
+      </form>
+      <% else %>
+        <a href="/login/new" class="ui item">
+          Login
+        </a>
+      <% end %>
+    </div>
+  </nav>
+  
+  <main class="ui page grid">
+    <div class="row">
+      <%= yield %>
+    </div>
+  </main>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 </body>
 </html>

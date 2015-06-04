@@ -1,7 +1,8 @@
-<h2>Log in</h2>
+<div class="ui hidden divider"></div>
+<h1>Log in</h1>
 
-<div class="row">
-  <div class="twelve wide column">
+<div class="sixteen wide column">
+  <div class="row">
     <%= form_for(:session, url: login_path) do |f| %>
 
       <%= f.label :username %>
@@ -12,7 +13,7 @@
 
       <%= f.submit "Log in", class: "ui submit button" %>
     <% end %>
-
-    <p>New user? <%= link_to "Sign up now!", signup_path %></p>
+    <div class="ui divider"></div>
+    <p>Don't have an account? <%= link_to "Sign up now!", signup_path %></p>
   </div>
 </div>
