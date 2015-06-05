@@ -13,6 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require react
+//= require react_ujs
+//= require components
 
 //= require ./libraries/underscore
 //= require ./libraries/backbone
@@ -20,8 +23,8 @@
 //= require ./libraries/moment
 //= require ./libraries/semantic.min
 
-//= require ./backbone/app
-//= require_tree ./backbone/models/
-//= require_tree ./backbone/collections/
-//= require_tree ./backbone/views/
-//= require_tree ./backbone/routers/
+//= require ./app
+//= require_tree ./models/
+//= require_tree ./collections/
+//= require_tree ./views/
+//= require_tree ./routers/
