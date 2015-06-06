@@ -5,5 +5,10 @@ module Api
       courses = Course.all
       render json: courses
     end
+
+    def show
+      courseInfo = Course.find(params[:id])
+      render json: courseInfo.to_json(:include => [:chapters, :user, :tags => {include: :category}])
+    end
   end
 end

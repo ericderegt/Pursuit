@@ -12,8 +12,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     resource :user, only: [:show]
-    resources :courses, only: [:index]
-    resources :chapters, only: [:index]
+    resources :courses
+    resources :chapters
   end
 
   # Example of regular route:

@@ -2,14 +2,37 @@ var PursuitApp = PursuitApp || { Models: {}, Collections: {}, Components: {}, Ro
 
 PursuitApp.Routers.AppRouter = Backbone.Router.extend({
   routes: {
-    '': 'index'
+    '': 'index',
+    'courses/:id': 'courseDetail',
+    'settings': 'showSettings'
   },
 
   index: function(){
-    // var courseCollection = new PursuitApp.Collections.CourseCollection();
+    React.unmountComponentAtNode($('#main-content')[0]);
+      // var courseCollection = new PursuitApp.Collections.CourseCollection();
+    React.render(
+      <PursuitApp.Components.CoursesBox url="/api/courses" pollInterval={2000} />,
+      document.getElementById('main-content')
+    );
+  },
 
-  React.render(<PursuitApp.Components.Timer />, document.getElementById('main-content'));
-  // React.render(React.createElement(PursuitApp.Components.Courses, null), document.getElementById('main-content'));
+  courseDetail: function(){
+    React.unmountComponentAtNode($('#main-content')[0]);
 
+    var string = document.location.hash;
+    var route_id = string.slice(-1);
+
+    React.render(
+      <PursuitApp.Components.CourseBox url={"/api/courses/" + route_id}/>,
+      document.getElementById('main-content')
+    );    
+  },
+
+  showSettings: function(){
+    React.unmountComponentAtNode($('#main-content')[0]);
+
+    React.render(<PursuitApp.Components.ShowSettings info={PursuitApp.currentUser.attributes} />,
+      document.getElementById('main-content')
+    );  
   }
 })

@@ -1,21 +1,28 @@
 var PursuitApp = PursuitApp || { Models: {}, Collections: {}, Components: {}, Routers: {} };
 
-var Comment = React.createClass({
+var Course = React.createClass({
   render: function() {
-    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
     return (
-      <div className="comment">
-        <h2 className="commentAuthor">
-          {this.props.author}
-        </h2>
-        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+      <div className="ui item">
+        <div className="ui small image">
+          <img src={this.props.imageUrl} />
+        </div>
+        <div className="content">
+          <a className="header" href={'/#courses/' + this.props.courseID}>{this.props.title}</a>
+          <div className="meta">
+            <span>{moment(this.props.date).startOf('hour').fromNow()}</span>
+          </div>
+          <div className="description">
+            <p>{this.props.description}</p>
+          </div>
+        </div>
       </div>
     );
   }
 });
 
-var CommentBox = React.createClass({
-  loadCommentsFromServer: function() {
+PursuitApp.Components.CoursesBox = React.createClass({
+  loadCoursesFromServer: function() {
     $.ajax({
       url: this.props.url,
       dataType: 'json',
@@ -28,10 +35,10 @@ var CommentBox = React.createClass({
       }.bind(this)
     });
   },
-  handleCommentSubmit: function(comment) {
-    var comments = this.state.data;
-    comments.push(comment);
-    this.setState({data: comments}, function() {
+  handleCourseSubmit: function(course) {
+    var courses = this.state.data;
+    courses.push(course);
+    this.setState({data: courses}, function() {
       // `setState` accepts a callback. To avoid (improbable) race condition,
       // `we'll send the ajax request right after we optimistically set the new
       // `state.
@@ -39,7 +46,7 @@ var CommentBox = React.createClass({
         url: this.props.url,
         dataType: 'json',
         type: 'POST',
-        data: comment,
+        data: course,
         success: function(data) {
           this.setState({data: data});
         }.bind(this),
@@ -53,40 +60,38 @@ var CommentBox = React.createClass({
     return {data: []};
   },
   componentDidMount: function() {
-    this.loadCommentsFromServer();
-    setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+    this.loadCoursesFromServer();
+    this.interval = setInterval(this.loadCoursesFromServer, this.props.pollInterval);
+  },
+  componentWillUnmount: function() {
+    clearInterval(this.interval);
   },
   render: function() {
     return (
-      <div className="commentBox">
-        <h1>Comments</h1>
-        <CommentList data={this.state.data} />
+      <div className="coursesBox">
+        <h3>Courses</h3>
+          <CourseList data={this.state.data} />
       </div>
     );
   }
 });
 
-var CommentList = React.createClass({
+var CourseList = React.createClass({
   render: function() {
-    var commentNodes = this.props.data.map(function(comment, index) {
+    var courseNodes = this.props.data.map(function(course, index) {
       return (
         // `key` is a React-specific concept and is not mandatory for the
         // purpose of this tutorial. if you're curious, see more here:
         // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
-        <Comment author={comment.author} key={index}>
-          {comment.text}
-        </Comment>
+        <Course title={course.title} description={course.description} courseID={course.id} date={course.updated_at} imageUrl={course.image_url} key={index} />
       );
     });
     return (
-      <div className="commentList">
-        {commentNodes}
+      <div className="courseList">
+        <div className="ui divided items">
+          {courseNodes}
+        </div>
       </div>
     );
   }
 });
-
-React.render(
-  <CommentBox url="comments.json" pollInterval={2000} />,
-  document.getElementById('content')
-);

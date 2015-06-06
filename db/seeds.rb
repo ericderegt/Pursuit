@@ -20,3 +20,6 @@
 # Chapter.create(course_id: 2, title: 'Make grilled cheese', link: 'http://www.foodnetwork.com/recipes/articles/50-grilled-cheese.html', content: 'Step 1 is to find a great recipe and then make a grilled cheese')
 # Chapter.create(course_id: 2, title: '?', link: 'https://www.youtube.com/watch?v=tO5sxLapAts', content: 'Intermediate step')
 # Chapter.create(course_id: 2, title: 'Profit', link: 'http://www.grilledcheeseacademy.com/contest', content: 'What a delicious grilled cheese')
+
+# Tag.create(course_id: 1, category_id: 1)
+# Tag.create(course_id: 2, category_id: 2)
