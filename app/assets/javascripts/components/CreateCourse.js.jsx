@@ -32,8 +32,6 @@ PursuitApp.Components.CreateCourse = React.createClass({
     this.refs.cImage.getDOMNode().value = '';
     this.setState({course: newCourse});
 
-    this.postCourse();
-
     var dataPost = {};
     dataPost.chapters = this.state.chapters;
     dataPost.course = this.state.course;
