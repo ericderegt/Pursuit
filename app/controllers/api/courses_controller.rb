@@ -10,5 +10,9 @@ module Api
       courseInfo = Course.find(params[:id])
       render json: courseInfo.to_json(:include => [:chapters, :user, :tags => {include: :category}])
     end
+
+    def create
+      byebug
+    end
   end
 end

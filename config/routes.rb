@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   resources :users, only: [:new, :create]
 
   namespace :api do
-    resource :user, only: [:show]
+    resource :user, only: [:show, :update]
     resources :courses
     resources :chapters
   end

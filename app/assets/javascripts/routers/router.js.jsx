@@ -4,6 +4,7 @@ PursuitApp.Routers.AppRouter = Backbone.Router.extend({
   routes: {
     '': 'index',
     'courses/:id': 'courseDetail',
+    'create': 'createCourse',
     'settings': 'showSettings'
   },
 
@@ -31,8 +32,16 @@ PursuitApp.Routers.AppRouter = Backbone.Router.extend({
   showSettings: function(){
     React.unmountComponentAtNode($('#main-content')[0]);
 
-    React.render(<PursuitApp.Components.ShowSettings info={PursuitApp.currentUser.attributes} />,
+    React.render(<PursuitApp.Components.ShowSettings user={PursuitApp.currentUser} />,
       document.getElementById('main-content')
     );  
+  },
+
+  createCourse: function(){
+    React.unmountComponentAtNode($('#main-content')[0]);
+
+    React.render(<PursuitApp.Components.CreateCourse />, 
+      document.getElementById('main-content')
+    );
   }
 })
