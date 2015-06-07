@@ -30,24 +30,26 @@ PursuitApp.Components.CreateCourse = React.createClass({
     this.refs.cTitle.getDOMNode().value = '';
     this.refs.cDescription.getDOMNode().value = '';
     this.refs.cImage.getDOMNode().value = '';
-    this.setState({course: newCourse});
+    this.setState({course: newCourse}, function(){
+      var dataPost = {};
+      dataPost.chapters = this.state.chapters;
+      dataPost.course = this.state.course;
 
-    var dataPost = {};
-    dataPost.chapters = this.state.chapters;
-    dataPost.course = this.state.course;
+      console.log(dataPost)
 
-    $.ajax({
-      url: '/api/courses',
-      dataType: 'json',
-      cache: false,
-      type: 'POST',
-      data: {dataPost},
-      success: function(data) {
-        console.log(data);
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
+      $.ajax({
+        url: '/api/courses',
+        dataType: 'json',
+        cache: false,
+        type: 'POST',
+        data: {dataPost},
+        success: function(data) {
+          console.log(data);
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
     });
   },
   getInitialState: function() {
