@@ -30,6 +30,8 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'therubyracer', :platforms => :ruby, group: :production
 
+gem 'execjs'
+
 # Use Unicorn as the app server
 # gem 'unicorn'
 
