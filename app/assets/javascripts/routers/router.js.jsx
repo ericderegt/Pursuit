@@ -36,7 +36,7 @@ PursuitApp.Routers.AppRouter = Backbone.Router.extend({
   showSettings: function(){
     React.unmountComponentAtNode($('#container')[0]);
 
-    React.render(<PursuitApp.Components.ShowSettings user={PursuitApp.currentUser} />,
+    React.render(<PursuitApp.Components.ShowSettings user={PursuitApp.currentUser} url={"/api/courses/user"} />,
       document.getElementById('container')
     );  
   },

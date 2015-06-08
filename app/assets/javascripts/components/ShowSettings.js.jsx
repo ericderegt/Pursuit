@@ -1,5 +1,35 @@
 var PursuitApp = PursuitApp || { Models: {}, Collections: {}, Components: {}, Routers: {} };
 
+var CourseItem = React.createClass({
+  render: function() {
+    return (
+      <a className="item" href={'/#courses/' + this.props.link}>{this.props.title}</a>
+    );
+  }
+})
+
+var MyCourses = React.createClass({
+  render: function() {
+    console.log(this.props.courses);
+    var courseNodes = this.props.courses.map(function(course, index) {
+      return (
+        // `key` is a React-specific concept and is not mandatory for the
+        // purpose of this tutorial. if you're curious, see more here:
+        // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
+        <CourseItem title={course.title} link={course.id} key={index} />
+      );
+    });
+    return (
+      <div>
+        <h5>My Created Courses</h5>
+        <div className="ui celled list">
+            {courseNodes}
+        </div>
+      </div>
+    );
+  }
+});
+
 PursuitApp.Components.ShowSettings = React.createClass({
   handleSubmit: function(e) {
     e.preventDefault();
@@ -7,11 +37,28 @@ PursuitApp.Components.ShowSettings = React.createClass({
     this.props.user.set('email', this.state.email);
     this.props.user.save();
   },
+  loadCoursesFromServer: function() {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({courses: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   getInitialState: function() {
-    return {username: this.props.user.attributes.username, email: this.props.user.attributes.email};
+    return {
+      username: this.props.user.attributes.username, 
+      email: this.props.user.attributes.email,
+      courses: []
+    };
   },
   componentDidMount: function() {
-    console.log(this.props.user)
+    this.loadCoursesFromServer();
   },
   componentWillUnmount: function() {
 
@@ -45,12 +92,7 @@ PursuitApp.Components.ShowSettings = React.createClass({
 
     leftContent = (
       <div>
-        <h5>My Playlist</h5>
-        <div className="ui celled list">
-          <div className="item">Cats</div>
-          <div className="item">Horses</div>
-          <div className="item">Dogs</div>
-        </div>
+        <MyCourses courses={this.state.courses} />
       </div>
     );
 

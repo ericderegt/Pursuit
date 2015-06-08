@@ -3,4 +3,5 @@ class Course < ActiveRecord::Base
   belongs_to :user
 
   has_many :tags
+  has_many :playlists, dependent: :destroy
 end

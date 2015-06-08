@@ -11,6 +11,11 @@ module Api
       render json: courseInfo.to_json(:include => [:chapters, :user, :tags => {include: :category}])
     end
 
+    def getuserscourses
+      courses = Course.where({user_id: current_user.id})
+      render json: courses
+    end
+
     def create
       if current_user
         course = {}
