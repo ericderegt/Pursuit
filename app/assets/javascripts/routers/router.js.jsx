@@ -24,11 +24,11 @@ PursuitApp.Routers.AppRouter = Backbone.Router.extend({
     React.unmountComponentAtNode($('#container')[0]);
 
     var string = document.location.hash;
-    var route_id = string.slice(-1);
+    var route_id = string.slice(9);
     var model = new PursuitApp.Models.PlaylistItem();
 
     PursuitApp.CourseBox = React.render(
-      <PursuitApp.Components.CourseBox model={model} playUrl= {"/api/playlists/" + route_id} url={"/api/courses/" + route_id}/>,
+      <PursuitApp.Components.CourseBox model={model} playUrl={"/api/playlists/" + route_id} course_id={route_id} url={"/api/courses/" + route_id}/>,
       document.getElementById('container')
     );    
   },

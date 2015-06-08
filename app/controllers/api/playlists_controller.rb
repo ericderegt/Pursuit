@@ -14,9 +14,16 @@ module Api
     end
 
     def create
+      if current_user
+        playlist = Playlist.create({user_id: current_user.id, course_id: params[:data]})
+        render json: playlist.to_json
+      end
     end
 
     def destroy
+      playlist = Playlist.find_by({course_id: params[:id], user_id: current_user.id})
+      playlist.destroy
+      render json: playlist.to_json
     end
   end
 end

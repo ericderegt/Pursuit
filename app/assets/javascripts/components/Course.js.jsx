@@ -46,9 +46,9 @@ var CourseInfo = React.createClass({
     }
     var playlistButton;
     if (this.props.playBool == true) {
-      playlistButton = 'Add to playlist'
+      playlistButton = 'Remove from playlist'
     } else {
-      playlistButton = 'Remove from Playlist'
+      playlistButton = 'Add to Playlist'
     };
     return (   
       <div className="ui fluid card">
@@ -114,11 +114,29 @@ PursuitApp.Components.CourseBox = React.createClass({
   },
   updateFavStatus: function(status){
     this.setState({playBool: status});
+    data = this.props.course_id;
 
     if (status === true) {
-      // create
+      $.ajax({
+        url: '/api/playlists',
+        dataType: 'json',
+        cache: false,
+        type: 'POST',
+        data: {data},
+        success: function(data) {
+          console.log(data);
+        }.bind(this),
+        error: function(xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this)
+      });
     } else {
-      // destroy
+      $.ajax({
+        method: "DELETE",
+        url: "api/playlists/" + data,
+      }).done(function(data){
+        console.log('done');
+      })
     };
   },
   render: function() {

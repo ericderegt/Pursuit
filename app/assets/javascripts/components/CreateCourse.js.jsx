@@ -30,6 +30,7 @@ PursuitApp.Components.CreateCourse = React.createClass({
     this.refs.cTitle.getDOMNode().value = '';
     this.refs.cDescription.getDOMNode().value = '';
     this.refs.cImage.getDOMNode().value = '';
+
     this.setState({course: newCourse}, function(){
       var dataPost = {};
       dataPost.chapters = this.state.chapters;
@@ -44,10 +45,11 @@ PursuitApp.Components.CreateCourse = React.createClass({
         type: 'POST',
         data: {dataPost},
         success: function(data) {
-          PursuitApp.Routers.AppRouter.
+          PursuitApp.myRouter.navigate("", {trigger: true});
         }.bind(this),
         error: function(xhr, status, err) {
-          console.error(this.props.url, status, err.toString());
+          // console.error(this.props.url, status, err.toString());
+          PursuitApp.myRouter.navigate("", {trigger: true});
         }.bind(this)
       });
     });
