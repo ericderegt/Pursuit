@@ -16,9 +16,13 @@ module Api
         course = {}
         course["title"] = params[:dataPost][:course]["0"]["title"]
         course["description"] = params[:dataPost][:course]["0"]["description"]
-        course["image_url"] = course_title = params[:dataPost][:course]["0"]["image_url"]
+        if params[:dataPost][:course]["0"]["image_url"] == '' || !params[:dataPost][:course]["0"]["image_url"]
+          course["image_url"] = "http://semantic-ui.com/images/wireframe/image.png" 
+        else
+          course["image_url"] = params[:dataPost][:course]["0"]["image_url"]
+        end
         course["user_id"] = current_user.id
-        Course.create(course)
+        newCourse = Course.create(course)
 
         chapters = params[:dataPost][:chapters]
         chapters.each do |key, val|
@@ -26,7 +30,7 @@ module Api
           chapter["title"] = val["title"]
           chapter["link"] = val["link"]
           chapter["content"] = val["content"]
-          chapter["course_id"] = Course.last.id
+          chapter["course_id"] = newCourse.id
           Chapter.create(chapter)
         end
 

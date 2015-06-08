@@ -3,7 +3,14 @@ module Api
     def index
       playlists = Playlist.joins(:user).where(user_id: current_user[:id])
       render json: playlists.to_json(:include => :course)
-      # how to include title as a prop?
+    end
+
+    def show
+      if current_user
+        playlist = Playlist.joins(:user).where({course_id: params[:id], user_id: current_user.id})
+        playBool = playlist.length > 0 ? true: false
+        render json: playBool.to_json
+      end
     end
 
     def create

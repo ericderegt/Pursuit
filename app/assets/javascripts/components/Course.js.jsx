@@ -36,11 +36,20 @@ var ChapterList = React.createClass({
 });
 
 var CourseInfo = React.createClass({
+  statusChange: function(){
+    this.props.updateFavStatus(!this.props.playBool);
+  },
   render: function() {
     var categoryTag;
     if (this.props.tags.length > 0) {
       categoryTag = 'Category - ' + this.props.tags;
     }
+    var playlistButton;
+    if (this.props.playBool == true) {
+      playlistButton = 'Add to playlist'
+    } else {
+      playlistButton = 'Remove from Playlist'
+    };
     return (   
       <div className="ui fluid card">
         <div className="image">
@@ -55,8 +64,8 @@ var CourseInfo = React.createClass({
             {categoryTag}
           </div>
           <div className="ui divider"></div>
-          <div className="ui bottom attached button">
-            Add To Playlist
+          <div className="ui bottom attached button" onClick={this.statusChange}>
+            {playlistButton}
           </div>
         </div>
       </div>
@@ -84,11 +93,33 @@ PursuitApp.Components.CourseBox = React.createClass({
       }.bind(this)
     });
   },
+  loadPlaylist: function() {
+    $.ajax({
+      url: this.props.playUrl,
+      dataType: 'json',
+      success: function(data) {
+        this.setState({playBool: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.playUrl, status, err.toString());
+      }.bind(this)
+    });
+  },
   getInitialState: function() {
-    return {course: [], chapters: [], user: [], tags: []};
+    return {course: [], chapters: [], user: [], tags: [], playBool: false};
   },
   componentDidMount: function() {
     this.loadChaptersFromServer();
+    this.loadPlaylist();
+  },
+  updateFavStatus: function(status){
+    this.setState({playBool: status});
+
+    if (status === true) {
+      // create
+    } else {
+      // destroy
+    };
   },
   render: function() {
     mainContent = (
@@ -103,7 +134,7 @@ PursuitApp.Components.CourseBox = React.createClass({
 
     leftContent = (
       <div>
-        <CourseInfo course={this.state.course} tags={this.state.tags} user={this.state.user} />
+        <CourseInfo updateFavStatus={this.updateFavStatus} playBool={this.state.playBool} course={this.state.course} tags={this.state.tags} user={this.state.user} />
       </div>
     );
 

@@ -41,16 +41,16 @@ var CourseList = React.createClass({
 var PlaylistItem = React.createClass({
   render: function() {
     return (
-      <div className="item">{this.props.user + ' - ' + this.props.course}</div>
+      <a className="item" href={'/#courses/' + this.props.course}>{this.props.name}</a>
     );
   }
 })
 
 var Playlists = React.createClass({
   render: function() {
-    var playlistNodes = this.props.playlists.map(function(playlist, index) {
+    var playlistNodes = this.props.playlist.map(function(playlistItem, index) {
       return (
-        <PlaylistItem user={playlist.user_id} course={playlist.course_id} key={index} />
+        <PlaylistItem name={playlistItem.get('course').title} course={playlistItem.get('course_id')} key={index} />
       );
     });
     return (
@@ -77,6 +77,7 @@ PursuitApp.Components.CoursesBox = React.createClass({
       }.bind(this)
     });
   },
+  // This function was pulling in the playlists. After switching to a backbone collection, don't need this anymore
   loadPlaylists: function() {
     $.ajax({
       url: '/api/playlists',
@@ -89,34 +90,14 @@ PursuitApp.Components.CoursesBox = React.createClass({
       }.bind(this)
     });
   },
-  handleCourseSubmit: function(course) {
-    var courses = this.state.data;
-    courses.push(course);
-    this.setState({data: courses}, function() {
-      // `setState` accepts a callback. To avoid (improbable) race condition,
-      // `we'll send the ajax request right after we optimistically set the new
-      // `state.
-      $.ajax({
-        url: this.props.url,
-        dataType: 'json',
-        type: 'POST',
-        data: course,
-        success: function(data) {
-          this.setState({data: data});
-        }.bind(this),
-        error: function(xhr, status, err) {
-          console.error(this.props.url, status, err.toString());
-        }.bind(this)
-      });
-    });
-  },
   getInitialState: function() {
     return {data: [], playlists: []};
   },
   componentDidMount: function() {
     this.loadCoursesFromServer();
-    this.loadPlaylists();
     this.interval = setInterval(this.loadCoursesFromServer, this.props.pollInterval);
+    this.props.playlist.on('add remove change', this.forceUpdate.bind(this, null));
+    this.props.playlist.fetch();
   },
   componentWillUnmount: function() {
     clearInterval(this.interval);
@@ -125,7 +106,7 @@ PursuitApp.Components.CoursesBox = React.createClass({
     leftContent = (
       <div>
         <h5>My Playlists</h5>
-        <Playlists playlists={this.state.playlists} />
+        <Playlists playlist={this.props.playlist} />
       </div>
     );
 

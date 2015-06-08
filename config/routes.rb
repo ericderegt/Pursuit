@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     resource :user, only: [:show, :update]
     resources :courses, only: [:create, :show, :destroy, :index]
     resources :chapters, only: [:create, :destroy, :index]
-    resources :playlists, only: [:create, :destroy, :index]
+    resources :playlists, only: [:create, :show, :destroy, :index]
   end
 
   # Example of regular route:

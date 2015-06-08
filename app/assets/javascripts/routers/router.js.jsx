@@ -10,9 +10,12 @@ PursuitApp.Routers.AppRouter = Backbone.Router.extend({
 
   index: function(){
     React.unmountComponentAtNode($('#container')[0]);
+
+    var collection = new PursuitApp.Collections.PlaylistCollection();
+
       // var courseCollection = new PursuitApp.Collections.CourseCollection();
-    React.render(
-      <PursuitApp.Components.CoursesBox url="/api/courses" pollInterval={2000} />,
+    PursuitApp.CoursesBox = React.render(
+      <PursuitApp.Components.CoursesBox  playlist={collection} url="/api/courses" pollInterval={2000} />,
       document.getElementById('container')
     );
   },
@@ -22,9 +25,10 @@ PursuitApp.Routers.AppRouter = Backbone.Router.extend({
 
     var string = document.location.hash;
     var route_id = string.slice(-1);
+    var model = new PursuitApp.Models.PlaylistItem();
 
-    React.render(
-      <PursuitApp.Components.CourseBox url={"/api/courses/" + route_id}/>,
+    PursuitApp.CourseBox = React.render(
+      <PursuitApp.Components.CourseBox model={model} playUrl= {"/api/playlists/" + route_id} url={"/api/courses/" + route_id}/>,
       document.getElementById('container')
     );    
   },

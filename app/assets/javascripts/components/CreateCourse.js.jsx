@@ -44,7 +44,7 @@ PursuitApp.Components.CreateCourse = React.createClass({
         type: 'POST',
         data: {dataPost},
         success: function(data) {
-          console.log(data);
+          PursuitApp.Routers.AppRouter.
         }.bind(this),
         error: function(xhr, status, err) {
           console.error(this.props.url, status, err.toString());

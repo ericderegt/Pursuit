@@ -6,7 +6,7 @@ $(function(){
   var promise = PursuitApp.currentUser.fetch();
   
   promise.done(function(){
-    var myRouter = new PursuitApp.Routers.AppRouter();
+    PursuitApp.myRouter = new PursuitApp.Routers.AppRouter();
     Backbone.history.start();
   });
-})
+});
