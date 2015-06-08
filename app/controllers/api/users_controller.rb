@@ -2,8 +2,10 @@ module Api
   class UsersController < ApplicationController
 
     def show
-      user = current_user
-      render json: user
+      if current_user
+        user = current_user
+        render json: user
+      end
     end
 
     def update
