@@ -23,3 +23,6 @@
 
 # Tag.create(course_id: 1, category_id: 1)
 # Tag.create(course_id: 2, category_id: 2)
+
+# Playlist.create(course_id: 2, user_id: 1)
+# Playlist.create(course_id: 1, user_id: 1)

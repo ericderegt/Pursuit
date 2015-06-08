@@ -21,6 +21,48 @@ var Course = React.createClass({
   }
 });
 
+var CourseList = React.createClass({
+  render: function() {
+    var courseNodes = this.props.data.map(function(course, index) {
+      return (
+        <Course title={course.title} description={course.description} courseID={course.id} date={course.updated_at} imageUrl={course.image_url} key={index} />
+      );
+    });
+    return (
+      <div className="courseList">
+        <div className="ui divided items">
+          {courseNodes}
+        </div>
+      </div>
+    );
+  }
+});
+
+var PlaylistItem = React.createClass({
+  render: function() {
+    return (
+      <div className="item">{this.props.user + ' - ' + this.props.course}</div>
+    );
+  }
+})
+
+var Playlists = React.createClass({
+  render: function() {
+    var playlistNodes = this.props.playlists.map(function(playlist, index) {
+      return (
+        <PlaylistItem user={playlist.user_id} course={playlist.course_id} key={index} />
+      );
+    });
+    return (
+      <div className="playlists">
+        <div className="ui celled list">
+          {playlistNodes}
+        </div>
+      </div>  
+    );
+  }
+})
+
 PursuitApp.Components.CoursesBox = React.createClass({
   loadCoursesFromServer: function() {
     $.ajax({
@@ -29,6 +71,18 @@ PursuitApp.Components.CoursesBox = React.createClass({
       cache: false,
       success: function(data) {
         this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  loadPlaylists: function() {
+    $.ajax({
+      url: '/api/playlists',
+      dataType: 'json',
+      success: function(data) {
+        this.setState({playlists: data});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -57,10 +111,11 @@ PursuitApp.Components.CoursesBox = React.createClass({
     });
   },
   getInitialState: function() {
-    return {data: []};
+    return {data: [], playlists: []};
   },
   componentDidMount: function() {
     this.loadCoursesFromServer();
+    this.loadPlaylists();
     this.interval = setInterval(this.loadCoursesFromServer, this.props.pollInterval);
   },
   componentWillUnmount: function() {
@@ -69,12 +124,8 @@ PursuitApp.Components.CoursesBox = React.createClass({
   render: function() {
     leftContent = (
       <div>
-        <h5>My Playlist</h5>
-        <div className="ui celled list">
-          <div className="item">Cats</div>
-          <div className="item">Horses</div>
-          <div className="item">Dogs</div>
-        </div>
+        <h5>My Playlists</h5>
+        <Playlists playlists={this.state.playlists} />
       </div>
     );
 
@@ -90,7 +141,7 @@ PursuitApp.Components.CoursesBox = React.createClass({
         <main className="ui page grid">
           <div className="row">
             <div className="ui hidden divider"></div>
-            <div className="ui hidden divider"></div> 
+            <div className="ui hidden divider"></div>
             <div className="four wide column">
               <div className="row" id="left-content">
                 {leftContent}
@@ -105,23 +156,6 @@ PursuitApp.Components.CoursesBox = React.createClass({
 
           </div>
         </main>
-      </div>
-    );
-  }
-});
-
-var CourseList = React.createClass({
-  render: function() {
-    var courseNodes = this.props.data.map(function(course, index) {
-      return (
-        <Course title={course.title} description={course.description} courseID={course.id} date={course.updated_at} imageUrl={course.image_url} key={index} />
-      );
-    });
-    return (
-      <div className="courseList">
-        <div className="ui divided items">
-          {courseNodes}
-        </div>
       </div>
     );
   }

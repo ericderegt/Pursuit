@@ -12,8 +12,9 @@ Rails.application.routes.draw do
 
   namespace :api do
     resource :user, only: [:show, :update]
-    resources :courses
-    resources :chapters
+    resources :courses, only: [:create, :show, :destroy, :index]
+    resources :chapters, only: [:create, :destroy, :index]
+    resources :playlists, only: [:create, :destroy, :index]
   end
 
   # Example of regular route:
