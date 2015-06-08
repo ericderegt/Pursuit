@@ -19,9 +19,6 @@ var ChapterList = React.createClass({
   render: function() {
     var chapterNodes = this.props.chapters.map(function(chapter, index) {
       return (
-        // `key` is a React-specific concept and is not mandatory for the
-        // purpose of this tutorial. if you're curious, see more here:
-        // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
         <Chapter title={chapter.title} content={chapter.content} index={index} link={chapter.link} date={chapter.updated_at} key={index} />
       );
     });
@@ -122,7 +119,7 @@ PursuitApp.Components.CourseBox = React.createClass({
         dataType: 'json',
         cache: false,
         type: 'POST',
-        data: {data},
+        data: JSON.stringify(data),
         success: function(data) {
           console.log(data);
         }.bind(this),
