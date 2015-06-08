@@ -5,6 +5,8 @@ module Api
       if current_user
         user = current_user
         render json: user
+      else
+        render plain: "unsuccessful"
       end
     end
 
