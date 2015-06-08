@@ -15,37 +15,6 @@ var Chapter = React.createClass({
   }
 });
 
-PursuitApp.Components.CourseBox = React.createClass({
-  loadChaptersFromServer: function() {
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      cache: false,
-      success: function(data) {
-        this.setState({chapters: data.chapters});
-        this.setState({course: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
-  getInitialState: function() {
-    return {course: [], chapters: []};
-  },
-  componentDidMount: function() {
-    this.loadChaptersFromServer();
-  },
-  render: function() {
-    return (
-      <div className="courseBox">
-        <h3 className="ui blue segment">{this.state.course.title}</h3>
-        <ChapterList chapters={this.state.chapters} />
-      </div>
-    );
-  }
-});
-
 var ChapterList = React.createClass({
   render: function() {
     var chapterNodes = this.props.chapters.map(function(chapter, index) {
@@ -61,6 +30,103 @@ var ChapterList = React.createClass({
         <div className="ui hidden divided items">
           {chapterNodes}
         </div>
+      </div>
+    );
+  }
+});
+
+var CourseInfo = React.createClass({
+  render: function() {
+    var categoryTag;
+    if (this.props.tags.length > 0) {
+      categoryTag = 'Category - ' + this.props.tags;
+    }
+    return (   
+      <div className="ui fluid card">
+        <div className="image">
+          <img src={this.props.course.image_url} />
+        </div>
+        <div className="content">
+          <a className="header">{'Author - ' + this.props.user.username}</a>
+          <div className="meta">
+            <span className="date">{'Created on ' + moment(this.props.course.updated_at).format('MMMM Do YYYY')}</span>
+          </div>
+          <div className="description">
+            {categoryTag}
+          </div>
+          <div className="ui divider"></div>
+          <div className="ui bottom attached button">
+            Add To Playlist
+          </div>
+        </div>
+      </div>
+    );
+  }
+})
+
+PursuitApp.Components.CourseBox = React.createClass({
+  loadChaptersFromServer: function() {
+    $.ajax({
+      url: this.props.url,
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({chapters: data.chapters});
+        this.setState({course: data});
+        this.setState({user: data.user});
+        
+        if (data.tags.length) {
+          this.setState({tags: data.tags[0].category.name});
+        };
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
+  getInitialState: function() {
+    return {course: [], chapters: [], user: [], tags: []};
+  },
+  componentDidMount: function() {
+    this.loadChaptersFromServer();
+  },
+  render: function() {
+    mainContent = (
+      <div className="courseBox">
+        <div className="ui blue segment">
+          <h3>{this.state.course.title}</h3>
+          <p>{'Description - ' + this.state.course.description}</p>
+        </div>
+        <ChapterList chapters={this.state.chapters} />
+      </div>
+    );
+
+    leftContent = (
+      <div>
+        <CourseInfo course={this.state.course} tags={this.state.tags} user={this.state.user} />
+      </div>
+    );
+
+    return (
+      <div>
+        <main className="ui page grid">
+          <div className="row">
+            <div className="ui hidden divider"></div>
+            <div className="ui hidden divider"></div>     
+            <div className="four wide column">
+              <div className="row" id="left-content">
+                {leftContent}
+              </div>
+            </div>
+
+            <div className="twelve wide column">
+              <div className="row" id="main-content">
+                {mainContent}
+              </div>
+            </div>
+
+          </div>
+        </main>
       </div>
     );
   }

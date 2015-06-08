@@ -75,7 +75,18 @@ PursuitApp.Components.CreateCourse = React.createClass({
     this.setState({chapters: newChapters});
   },
   render: function() {
-    return (
+    leftContent = (
+      <div>
+        <h5>My Playlist</h5>
+        <div className="ui celled list">
+          <div className="item">Cats</div>
+          <div className="item">Horses</div>
+          <div className="item">Dogs</div>
+        </div>
+      </div>
+    );
+
+    mainContent = (
       <div className="createCourse">
         <h3>Create Course</h3>
         <form className="courseForm" onSubmit={this.handleSubmit}>
@@ -115,6 +126,29 @@ PursuitApp.Components.CreateCourse = React.createClass({
           <button className="ui blue submit button">Submit</button>
         </form>
       </div>
+    );
+
+    return (
+      <div>
+        <main className="ui page grid">
+          <div className="row">
+            <div className="ui hidden divider"></div>
+            <div className="ui hidden divider"></div>     
+            <div className="four wide column">
+              <div className="row" id="left-content">
+                {leftContent}
+              </div>
+            </div>
+
+            <div className="twelve wide column">
+              <div className="row" id="main-content">
+                {mainContent}
+              </div>
+            </div>
+
+          </div>
+        </main>
+      </div>      
     );
   }
 });

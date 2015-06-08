@@ -9,39 +9,39 @@ PursuitApp.Routers.AppRouter = Backbone.Router.extend({
   },
 
   index: function(){
-    React.unmountComponentAtNode($('#main-content')[0]);
+    React.unmountComponentAtNode($('#container')[0]);
       // var courseCollection = new PursuitApp.Collections.CourseCollection();
     React.render(
       <PursuitApp.Components.CoursesBox url="/api/courses" pollInterval={2000} />,
-      document.getElementById('main-content')
+      document.getElementById('container')
     );
   },
 
   courseDetail: function(){
-    React.unmountComponentAtNode($('#main-content')[0]);
+    React.unmountComponentAtNode($('#container')[0]);
 
     var string = document.location.hash;
     var route_id = string.slice(-1);
 
     React.render(
       <PursuitApp.Components.CourseBox url={"/api/courses/" + route_id}/>,
-      document.getElementById('main-content')
+      document.getElementById('container')
     );    
   },
 
   showSettings: function(){
-    React.unmountComponentAtNode($('#main-content')[0]);
+    React.unmountComponentAtNode($('#container')[0]);
 
     React.render(<PursuitApp.Components.ShowSettings user={PursuitApp.currentUser} />,
-      document.getElementById('main-content')
+      document.getElementById('container')
     );  
   },
 
   createCourse: function(){
-    React.unmountComponentAtNode($('#main-content')[0]);
+    React.unmountComponentAtNode($('#container')[0]);
 
     React.render(<PursuitApp.Components.CreateCourse />, 
-      document.getElementById('main-content')
+      document.getElementById('container')
     );
   }
 })

@@ -67,10 +67,44 @@ PursuitApp.Components.CoursesBox = React.createClass({
     clearInterval(this.interval);
   },
   render: function() {
-    return (
+    leftContent = (
+      <div>
+        <h5>My Playlist</h5>
+        <div className="ui celled list">
+          <div className="item">Cats</div>
+          <div className="item">Horses</div>
+          <div className="item">Dogs</div>
+        </div>
+      </div>
+    );
+
+    mainContent = (
       <div className="coursesBox">
         <h3>Courses</h3>
-          <CourseList data={this.state.data} />
+        <CourseList data={this.state.data} />
+      </div>
+    );
+
+    return (
+      <div>
+        <main className="ui page grid">
+          <div className="row">
+            <div className="ui hidden divider"></div>
+            <div className="ui hidden divider"></div> 
+            <div className="four wide column">
+              <div className="row" id="left-content">
+                {leftContent}
+              </div>
+            </div>
+
+            <div className="twelve wide column">
+              <div className="row" id="main-content">
+                {mainContent}
+              </div>
+            </div>
+
+          </div>
+        </main>
       </div>
     );
   }

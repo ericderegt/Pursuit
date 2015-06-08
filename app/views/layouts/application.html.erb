@@ -27,11 +27,8 @@
     </div>
   </nav>
   
-  <main class="ui page grid">
-    <div class="row">
-      <%= yield %>
-    </div>
-  </main>
+  <div id="container"><%= yield %></div>
+
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 </body>
 </html>
