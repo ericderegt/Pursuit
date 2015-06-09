@@ -145,7 +145,7 @@ PursuitApp.Components.CourseBox = React.createClass({
     } else {
       $.ajax({
         method: "DELETE",
-        url: "api/playlists/" + data,
+        url: "api/playlists/" + data.id,
       }).done(function(data){
         console.log('done');
       })
