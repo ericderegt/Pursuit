@@ -11,7 +11,6 @@ module Api
       render json: courseInfo.to_json(:include => [:chapters, :user, :tags => {include: :category}])
     end
 
-    # I did this because I needed another route for the settings page to show the courses that a user created
     def getuserscourses
       courses = Course.where({user_id: current_user.id})
       render json: courses
@@ -20,17 +19,17 @@ module Api
     def create
       if current_user
         course = {}
-        course["title"] = params[:course]["0"]["title"]
-        course["description"] = params[:course]["0"]["description"]
-        if params[:course]["0"]["image_url"] == '' || !params[:course]["0"]["image_url"]
+        course["title"] = params[:dataPost][:course]["0"]["title"]
+        course["description"] = params[:dataPost][:course]["0"]["description"]
+        if params[:dataPost][:course]["0"]["image_url"] == '' || !params[:dataPost][:course]["0"]["image_url"]
           course["image_url"] = "http://semantic-ui.com/images/wireframe/image.png" 
         else
-          course["image_url"] = params[:course]["0"]["image_url"]
+          course["image_url"] = params[:dataPost][:course]["0"]["image_url"]
         end
         course["user_id"] = current_user.id
         newCourse = Course.create(course)
 
-        chapters = params[:chapters]
+        chapters = params[:dataPost][:chapters]
         chapters.each do |key, val|
           chapter = {}
           chapter["title"] = val["title"]
