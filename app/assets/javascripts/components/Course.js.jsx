@@ -1,5 +1,10 @@
 var PursuitApp = PursuitApp || { Models: {}, Collections: {}, Components: {}, Routers: {} };
 
+//PursuitApp.Components.CourseBox is the parent component
+//CourseInfo is the left column
+//ChapterList is the main column and has Chapter as a child component
+
+
 var Chapter = React.createClass({
   render: function() {
     return (
@@ -32,6 +37,10 @@ var ChapterList = React.createClass({
   }
 });
 
+// CourseInfo receives several props from its parent including updateFavStatus
+// On button click, statusChange is called, which switches the status and
+// passes it into updateFavStatus at the parent, triggering a state change.
+
 var CourseInfo = React.createClass({
   statusChange: function(){
     this.props.updateFavStatus(!this.props.playBool);
@@ -61,7 +70,7 @@ var CourseInfo = React.createClass({
             {categoryTag}
           </div>
           <div className="ui divider"></div>
-          <div className="ui bottom attached button" onClick={this.statusChange}>
+          <div className="ui bottom attached toggle button" onClick={this.statusChange}>
             {playlistButton}
           </div>
         </div>
@@ -69,6 +78,9 @@ var CourseInfo = React.createClass({
     );
   }
 })
+
+// CourseBox retrieves data from api and passes props to children. Also,
+// based on the state of playBool, CourseBox will either create or destroy a playlist item.
 
 PursuitApp.Components.CourseBox = React.createClass({
   loadChaptersFromServer: function() {
@@ -111,7 +123,10 @@ PursuitApp.Components.CourseBox = React.createClass({
   },
   updateFavStatus: function(status){
     this.setState({playBool: status});
-    data = this.props.course_id;
+    data = {};
+    data.id = this.props.course_id;
+
+    console.log(data);
 
     if (status === true) {
       $.ajax({
@@ -119,7 +134,7 @@ PursuitApp.Components.CourseBox = React.createClass({
         dataType: 'json',
         cache: false,
         type: 'POST',
-        data: JSON.stringify(data),
+        data: data,
         success: function(data) {
           console.log(data);
         }.bind(this),

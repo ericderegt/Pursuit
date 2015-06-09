@@ -15,7 +15,7 @@ PursuitApp.Routers.AppRouter = Backbone.Router.extend({
 
       // var courseCollection = new PursuitApp.Collections.CourseCollection();
     PursuitApp.CoursesBox = React.render(
-      <PursuitApp.Components.CoursesBox  playlist={collection} url="/api/courses" pollInterval={2000} />,
+      <PursuitApp.Components.CoursesBox  playlist={collection} url="/api/courses" pollInterval={20000} />,
       document.getElementById('container')
     );
   },
@@ -28,7 +28,7 @@ PursuitApp.Routers.AppRouter = Backbone.Router.extend({
     var model = new PursuitApp.Models.PlaylistItem();
 
     PursuitApp.CourseBox = React.render(
-      <PursuitApp.Components.CourseBox model={model} playUrl={"/api/playlists/" + route_id} course_id={route_id} url={"/api/courses/" + route_id}/>,
+      <PursuitApp.Components.CourseBox model={model} playUrl={"/api/playlists/" + route_id} course_id={parseInt(route_id)} url={"/api/courses/" + route_id}/>,
       document.getElementById('container')
     );    
   },

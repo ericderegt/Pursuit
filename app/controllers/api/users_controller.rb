@@ -1,6 +1,6 @@
 module Api
   class UsersController < ApplicationController
-
+    # When if statement wasn't in show method, was causing big error where user would be re-directed an wasn't able to log in
     def show
       if current_user
         user = current_user

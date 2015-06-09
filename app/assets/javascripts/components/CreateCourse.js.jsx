@@ -43,7 +43,7 @@ PursuitApp.Components.CreateCourse = React.createClass({
         dataType: 'json',
         cache: false,
         type: 'POST',
-        data: JSON.stringify(dataPost),
+        data: dataPost,
         success: function(data) {
           PursuitApp.myRouter.navigate("", {trigger: true});
         }.bind(this),
