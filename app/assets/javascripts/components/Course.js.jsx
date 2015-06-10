@@ -111,11 +111,7 @@ PursuitApp.Components.CourseBox = React.createClass({
   },
   updateFavStatus: function(status){
     this.setState({playBool: status});
-    data = {};
-    data.id = this.props.course_id;
-    //data = this.props.course_id;
-
-    console.log(data)
+    data = this.props.course_id;
 
     if (status === true) {
       $.ajax({
@@ -123,7 +119,7 @@ PursuitApp.Components.CourseBox = React.createClass({
         dataType: 'json',
         cache: false,
         type: 'POST',
-        data: data,
+        data: JSON.stringify(data),
         success: function(data) {
           console.log(data);
         }.bind(this),
@@ -134,7 +130,7 @@ PursuitApp.Components.CourseBox = React.createClass({
     } else {
       $.ajax({
         method: "DELETE",
-        url: "api/playlists/" + data.id,
+        url: "api/playlists/" + data,
       }).done(function(data){
         console.log('done');
       })
