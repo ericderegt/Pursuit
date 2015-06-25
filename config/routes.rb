@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     resources :courses, only: [:create, :show, :destroy, :index]
     resources :chapters, only: [:create, :destroy, :index]
     resources :playlists, only: [:create, :show, :destroy, :index]
+    resources :completed_chapters, only: [:create, :destroy, :index]
   end
 
   # Example of regular route:

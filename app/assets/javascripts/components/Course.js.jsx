@@ -1,13 +1,28 @@
 var PursuitApp = PursuitApp || { Models: {}, Collections: {}, Components: {}, Routers: {} };
 
 var Chapter = React.createClass({
+  completedCheck: function() {
+    if (this.props.complete == 0) {
+      this.props.updateCompletedChapters('post', this.props.chapterId)
+    } else {
+      this.props.updateCompletedChapters('delete', this.props.chapterId)
+    };
+  },
   render: function() {
+    var completed;
+    if (this.props.complete == 1) {
+      completed = 'Mark Incomplete';
+    } else {
+      completed = 'Mark Complete';
+    };
+
     return (
       <div className="ui message">
         <div className="content">
           <a className="header" href={this.props.link} target="_blank">{this.props.index + 1} - {this.props.title}</a>
           <div className="description">
             <p>{this.props.content}</p>
+            <button className="ui mini blue button" onClick={this.completedCheck}>{completed}</button>
           </div>
         </div>
       </div>
@@ -19,9 +34,9 @@ var ChapterList = React.createClass({
   render: function() {
     var chapterNodes = this.props.chapters.map(function(chapter, index) {
       return (
-        <Chapter title={chapter.title} content={chapter.content} index={index} link={chapter.link} date={chapter.updated_at} key={index} />
+        <Chapter title={chapter.title} chapterId={chapter.id} content={chapter.content} complete={chapter.completed_chapters.length} updateCompletedChapters={this.props.updateCompletedChapters} index={index} link={chapter.link} date={chapter.updated_at} key={index} />
       );
-    });
+    }, this);
     return (
       <div className="chapterList">
         <div className="ui hidden divided items">
@@ -107,7 +122,31 @@ PursuitApp.Components.CourseBox = React.createClass({
   },
   componentDidMount: function() {
     this.loadChaptersFromServer();
+    this.interval = setInterval(this.loadChaptersFromServer, this.props.pollInterval);
     this.loadPlaylist();
+  },
+  componentWillUnmount: function() {
+    clearInterval(this.interval);
+  },
+  updateCompletedChapters: function(type, chapterid){
+    data = {id: chapterid};
+
+    if (type == 'post') {
+      $.post("api/completed_chapters", data)
+        .done(function(data) {
+          this.loadChaptersFromServer();
+        }.bind(this))
+        .fail(function (xhr, status, err) {
+          console.error(this.props.url, status, err.toString());
+        }.bind(this));
+    } else {
+      $.ajax({
+        method: "DELETE",
+        url: "api/completed_chapters/" + data.id,
+      }).done(function(data){
+        this.loadChaptersFromServer();
+      }.bind(this));
+    };
   },
   updateFavStatus: function(status){
     this.setState({playBool: status});
@@ -151,7 +190,7 @@ PursuitApp.Components.CourseBox = React.createClass({
           <h3>{this.state.course.title}</h3>
           <p>{'Description - ' + this.state.course.description}</p>
         </div>
-        <ChapterList chapters={this.state.chapters} />
+        <ChapterList chapters={this.state.chapters} updateCompletedChapters={this.updateCompletedChapters} />
       </div>
     );
 

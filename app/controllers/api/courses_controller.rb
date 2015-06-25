@@ -8,7 +8,13 @@ module Api
 
     def show
       courseInfo = Course.find(params[:id])
-      render json: courseInfo.to_json(:include => [:chapters, :user, :tags => {include: :category}])
+      render json: courseInfo.to_json(
+        :include => {
+          :chapters => {:include => [:completed_chapters]},
+          :user => {:only => [:username]}, 
+          :tags => {:include => [:category]}
+        }
+      )
     end
 
     def getuserscourses
@@ -42,5 +48,16 @@ module Api
         render plain: 'Success!'
       end
     end
+
+    def destroy
+      course = Course.find(params[:id])
+      if current_user.id == course.user_id
+        course.destroy
+        render json: course.to_json
+      else
+        render plain: 'Error'
+      end
+    end
+
   end
 end

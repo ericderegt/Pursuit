@@ -36,14 +36,12 @@ PursuitApp.Components.CreateCourse = React.createClass({
       dataPost.chapters = this.state.chapters;
       dataPost.course = this.state.course;
 
-      console.log(dataPost)
-
       $.ajax({
         url: '/api/courses',
         dataType: 'json',
         cache: false,
         type: 'POST',
-        data: JSON.stringify(dataPost),
+        data: {dataPost},
         success: function(data) {
           PursuitApp.myRouter.navigate("", {trigger: true});
         }.bind(this),
@@ -79,12 +77,6 @@ PursuitApp.Components.CreateCourse = React.createClass({
   render: function() {
     leftContent = (
       <div>
-        <h5>My Playlist</h5>
-        <div className="ui celled list">
-          <div className="item">Cats</div>
-          <div className="item">Horses</div>
-          <div className="item">Dogs</div>
-        </div>
       </div>
     );
 

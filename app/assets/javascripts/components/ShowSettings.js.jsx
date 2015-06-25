@@ -1,25 +1,38 @@
 var PursuitApp = PursuitApp || { Models: {}, Collections: {}, Components: {}, Routers: {} };
 
 var CourseItem = React.createClass({
+  deleteSelected: function() {
+    this.props.deleteCourse(this.props.link);
+  },
   render: function() {
     return (
-      <a className="item" href={'/#courses/' + this.props.link}>{this.props.title}</a>
+      <div className="ui small card">
+        <div className="image">
+          <img src={this.props.image_url} />
+        </div>
+        <div className="content">
+          {this.props.title}
+          <div className="ui divider"></div>
+          <div className="ui bottom attached button" onClick={this.deleteSelected}>
+            Delete
+          </div>
+        </div>
+      </div>
     );
   }
 })
 
 var MyCourses = React.createClass({
   render: function() {
-    console.log(this.props.courses);
     var courseNodes = this.props.courses.map(function(course, index) {
       return (
-        <CourseItem title={course.title} link={course.id} key={index} />
+        <CourseItem title={course.title} link={course.id} image_url={course.image_url} key={index} deleteCourse={this.props.deleteCourse} />
       );
-    });
+    }, this);
     return (
       <div>
         <h5>My Created Courses</h5>
-        <div className="ui celled list">
+        <div className="ui cards">
             {courseNodes}
         </div>
       </div>
@@ -67,29 +80,36 @@ PursuitApp.Components.ShowSettings = React.createClass({
       this.setState(state);
     }.bind(this);
   },
+  deleteCourse: function(course) {
+    $.ajax({
+      method: "DELETE",
+      url: "api/courses/" + course,
+    }).done(function(data){
+      console.log('done');
+      this.loadCoursesFromServer();
+    }.bind(this));
+  },
   render: function() {
     mainContent = (
-      <div className="userInfo">
-        <h3>Settings</h3>
-        <form className="ui small form segment" onSubmit={this.handleSubmit}>
-          <div className="two fields">
-            <div className="field">
-              <label>Username</label>
-              <input value={this.state.username} type="text" onChange={this.handleChange('username')} />
-            </div>
-            <div className="field">
-              <label>Email</label>
-              <input value={this.state.email} type="text" onChange={this.handleChange('email')} />
-            </div>
-          </div>
-          <button className="ui submit button">Submit</button>
-        </form>
+      <div>
+        <MyCourses courses={this.state.courses} deleteCourse={this.deleteCourse} />
       </div>
     );
 
     leftContent = (
-      <div>
-        <MyCourses courses={this.state.courses} />
+      <div className="userInfo">
+        <h5>Edit User Settings</h5>
+        <form className="ui small form segment" onSubmit={this.handleSubmit}>
+          <div className="field">
+            <label>Username</label>
+            <input value={this.state.username} type="text" onChange={this.handleChange('username')} />
+          </div>
+          <div className="field">
+            <label>Email</label>
+            <input value={this.state.email} type="text" onChange={this.handleChange('email')} />
+          </div>
+          <button className="ui submit button">Submit</button>
+        </form>
       </div>
     );
 

@@ -4,7 +4,7 @@ var Course = React.createClass({
   render: function() {
     return (
       <div className="ui item">
-        <div className="ui small image">
+        <div className="ui tiny rounded image">
           <img src={this.props.imageUrl} />
         </div>
         <div className="content">
