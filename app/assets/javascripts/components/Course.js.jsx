@@ -132,7 +132,7 @@ PursuitApp.Components.CourseBox = React.createClass({
     data = {id: chapterid};
 
     if (type == 'post') {
-      $.post("api/completed_chapters", JSON.stringify(data)
+      $.post("api/completed_chapters", JSON.stringify(data))
         .done(function(data) {
           this.loadChaptersFromServer();
         }.bind(this))
