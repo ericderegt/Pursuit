@@ -83,7 +83,7 @@ var CourseInfo = React.createClass({
       </div>
     );
   }
-})
+});
 
 PursuitApp.Components.CourseBox = React.createClass({
   loadChaptersFromServer: function() {
