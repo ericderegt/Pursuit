@@ -167,7 +167,7 @@ PursuitApp.Components.CourseBox = React.createClass({
       //     console.error(this.props.url, status, err.toString());
       //   }.bind(this)
       // });
-      $.post("/api/playlists", JSON.stringify(data)
+      $.post("/api/playlists", JSON.stringify(data))
         .done(function (data) {
           console.log(data);
         })
