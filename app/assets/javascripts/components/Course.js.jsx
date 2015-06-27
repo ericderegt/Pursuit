@@ -132,7 +132,7 @@ PursuitApp.Components.CourseBox = React.createClass({
     data = {id: chapterid};
 
     if (type == 'post') {
-      $.post("api/completed_chapters", data)
+      $.post("api/completed_chapters", JSON.stringify({data}))
         .done(function(data) {
           this.loadChaptersFromServer();
         }.bind(this))
@@ -167,7 +167,7 @@ PursuitApp.Components.CourseBox = React.createClass({
       //     console.error(this.props.url, status, err.toString());
       //   }.bind(this)
       // });
-      $.post("/api/playlists", data)
+      $.post("/api/playlists", JSON.stringify({data}))
         .done(function (data) {
           console.log(data);
         })
@@ -183,12 +183,32 @@ PursuitApp.Components.CourseBox = React.createClass({
       })
     };
   },
+  chapterProgress: function() {
+    count = 0;
+    total = 0;
+    this.state.chapters.map(function(chapter,index){
+      if (chapter.completed_chapters.length == 0) {
+        total++;
+      } else if (chapter.completed_chapters.length == 1) {
+        count++;
+        total++;
+      }
+    });
+
+    if (count == total) {
+      return ('Completed!')
+    } else {
+      return (count + '/' + total);
+    };
+  },
   render: function() {
+
     mainContent = (
       <div className="courseBox">
         <div className="ui blue segment">
           <h3>{this.state.course.title}</h3>
           <p>{'Description - ' + this.state.course.description}</p>
+          <p>{'Your Progress - ' + this.chapterProgress()}</p>
         </div>
         <ChapterList chapters={this.state.chapters} updateCompletedChapters={this.updateCompletedChapters} />
       </div>

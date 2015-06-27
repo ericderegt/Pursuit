@@ -105,7 +105,7 @@ PursuitApp.Components.CoursesBox = React.createClass({
   render: function() {
     leftContent = (
       <div>
-        <h5>My Playlists</h5>
+        <h5>My Playlist</h5>
         <Playlists playlist={this.props.playlist} />
       </div>
     );
