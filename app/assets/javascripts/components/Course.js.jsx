@@ -129,7 +129,7 @@ PursuitApp.Components.CourseBox = React.createClass({
     clearInterval(this.interval);
   },
   updateCompletedChapters: function(type, chapterid){
-    data = chapterid;
+    data = {chapterid};
 
     if (type == 'post') {
       $.ajax({
@@ -164,7 +164,7 @@ PursuitApp.Components.CourseBox = React.createClass({
   updateFavStatus: function(status){
     this.setState({playBool: status});
     // data = {id: this.props.course_id};
-    data = this.props.course_id;
+    data = {this.props.course_id};
 
     if (status === true) {
       $.ajax({
