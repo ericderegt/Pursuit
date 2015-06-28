@@ -129,7 +129,7 @@ PursuitApp.Components.CourseBox = React.createClass({
     clearInterval(this.interval);
   },
   updateCompletedChapters: function(type, chapterid){
-    data.id = chapterid;
+    data = chapterid;
 
     if (type == 'post') {
       $.post("api/completed_chapters", JSON.stringify(data))
@@ -142,7 +142,7 @@ PursuitApp.Components.CourseBox = React.createClass({
     } else {
       $.ajax({
         method: "DELETE",
-        url: "api/completed_chapters/" + data.id,
+        url: "api/completed_chapters/" + data,
       }).done(function(data){
         this.loadChaptersFromServer();
       }.bind(this));
@@ -151,7 +151,7 @@ PursuitApp.Components.CourseBox = React.createClass({
   updateFavStatus: function(status){
     this.setState({playBool: status});
     // data = {id: this.props.course_id};
-    data.id = this.props.course_id;
+    data = this.props.course_id;
 
     if (status === true) {
       // $.ajax({
@@ -177,7 +177,7 @@ PursuitApp.Components.CourseBox = React.createClass({
     } else {
       $.ajax({
         method: "DELETE",
-        url: "api/playlists/" + data.id,
+        url: "api/playlists/" + data,
       }).done(function(data){
         console.log('done');
       });
