@@ -132,13 +132,26 @@ PursuitApp.Components.CourseBox = React.createClass({
     data = chapterid;
 
     if (type == 'post') {
-      $.post("api/completed_chapters", {data})
-        .done(function(data) {
-          this.loadChaptersFromServer();
-        }.bind(this))
-        .fail(function (xhr, status, err) {
+      $.ajax({
+        url: '/api/completed_chapters',
+        dataType: 'json',
+        cache: false,
+        type: 'POST',
+        data: {data},
+        success: function(data) {
+          console.log(data);
+        }.bind(this),
+        error: function(xhr, status, err) {
           console.error(this.props.url, status, err.toString());
-        }.bind(this));
+        }.bind(this)
+      });
+      // $.post("api/completed_chapters", {data})
+      //   .done(function(data) {
+      //     this.loadChaptersFromServer();
+      //   }.bind(this))
+      //   .fail(function (xhr, status, err) {
+      //     console.error(this.props.url, status, err.toString());
+      //   }.bind(this));
     } else {
       $.ajax({
         method: "DELETE",
@@ -154,26 +167,26 @@ PursuitApp.Components.CourseBox = React.createClass({
     data = this.props.course_id;
 
     if (status === true) {
-      // $.ajax({
-      //   url: '/api/playlists',
-      //   dataType: 'json',
-      //   cache: false,
-      //   type: 'POST',
-      //   data: data,
-      //   success: function(data) {
-      //     console.log(data);
-      //   }.bind(this),
-      //   error: function(xhr, status, err) {
-      //     console.error(this.props.url, status, err.toString());
-      //   }.bind(this)
-      // });
-      $.post("/api/playlists", {data})
-        .done(function (data) {
+      $.ajax({
+        url: '/api/playlists',
+        dataType: 'json',
+        cache: false,
+        type: 'POST',
+        data: {data},
+        success: function(data) {
           console.log(data);
-        })
-        .fail(function (xhr, status, err) {
+        }.bind(this),
+        error: function(xhr, status, err) {
           console.error(this.props.url, status, err.toString());
-        });
+        }.bind(this)
+      });
+      // $.post("/api/playlists", {data})
+      //   .done(function (data) {
+      //     console.log(data);
+      //   })
+      //   .fail(function (xhr, status, err) {
+      //     console.error(this.props.url, status, err.toString());
+      //   });
     } else {
       $.ajax({
         method: "DELETE",
