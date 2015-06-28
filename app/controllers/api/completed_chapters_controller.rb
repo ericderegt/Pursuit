@@ -7,7 +7,7 @@ module Api
 
     def create
       if current_user
-        completed = CompletedChapter.create({user_id: current_user.id, chapter_id: params[:data]})
+        completed = CompletedChapter.create({user_id: current_user.id, chapter_id: params[:id]})
         render json: completed.to_json
       end
     end
