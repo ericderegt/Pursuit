@@ -137,7 +137,7 @@ PursuitApp.Components.CourseBox = React.createClass({
         dataType: 'json',
         cache: false,
         type: 'POST',
-        data: {data},
+        data: data,
         success: function(data) {
           console.log(data);
         }.bind(this),
@@ -172,7 +172,7 @@ PursuitApp.Components.CourseBox = React.createClass({
         dataType: 'json',
         cache: false,
         type: 'POST',
-        data: {data},
+        data: data,
         success: function(data) {
           console.log(data);
         }.bind(this),
