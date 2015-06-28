@@ -174,7 +174,7 @@ PursuitApp.Components.CourseBox = React.createClass({
         dataType: 'json',
         cache: false,
         type: 'POST',
-        data: JSON.stinrgify(data),
+        data: JSON.stringify(data),
         success: function(data) {
           console.log(data);
         }.bind(this),
