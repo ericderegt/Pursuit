@@ -180,7 +180,7 @@ PursuitApp.Components.CourseBox = React.createClass({
         url: "api/playlists/" + data.id,
       }).done(function(data){
         console.log('done');
-      })
+      });
     };
   },
   chapterProgress: function() {

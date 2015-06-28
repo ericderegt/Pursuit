@@ -45,4 +45,4 @@ PursuitApp.Routers.AppRouter = Backbone.Router.extend({
       document.getElementById('container')
     );
   }
-})
+});

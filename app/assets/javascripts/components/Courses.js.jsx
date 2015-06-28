@@ -61,7 +61,7 @@ var Playlists = React.createClass({
       </div>  
     );
   }
-})
+});
 
 PursuitApp.Components.CoursesBox = React.createClass({
   loadCoursesFromServer: function() {

@@ -20,7 +20,7 @@ var CourseItem = React.createClass({
       </div>
     );
   }
-})
+});
 
 var MyCourses = React.createClass({
   render: function() {
