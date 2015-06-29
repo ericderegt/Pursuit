@@ -1,7 +1,5 @@
 #Pursuit
 
-###[Deployed Version](https://calm-ridge-5335.herokuapp.com/)
-
 ###[Wireframe](/Misc/homepage.png)
 
 ###[ERD](/Misc/ERD.png)

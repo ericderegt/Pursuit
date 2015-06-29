@@ -17,6 +17,12 @@ var Chapters = React.createClass({
   }
 });
 
+
+/*
+- handleSubmit takes all of the inputs from course fields and any inputted chapters and makes ajax call to server
+- handleChapter adds a new chapter before course submission
+*/
+
 PursuitApp.Components.CreateCourse = React.createClass({
   handleSubmit: function(e) {
     e.preventDefault();
@@ -46,7 +52,6 @@ PursuitApp.Components.CreateCourse = React.createClass({
           PursuitApp.myRouter.navigate("", {trigger: true});
         }.bind(this),
         error: function(xhr, status, err) {
-          // console.error(this.props.url, status, err.toString());
           PursuitApp.myRouter.navigate("", {trigger: true});
         }.bind(this)
       });
@@ -54,12 +59,6 @@ PursuitApp.Components.CreateCourse = React.createClass({
   },
   getInitialState: function() {
     return {chapters: [], course: []};
-  },
-  componentDidMount: function() {
-
-  },
-  componentWillUnmount: function() {
-
   },
   handleChapter: function(e) {
     e.preventDefault();

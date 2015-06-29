@@ -1,5 +1,7 @@
 var PursuitApp = PursuitApp || { Models: {}, Collections: {}, Components: {}, Routers: {} };
 
+
+// deleteSelected is passed from ShowSettings to manage state of courses
 var CourseItem = React.createClass({
   deleteSelected: function() {
     this.props.deleteCourse(this.props.link);
@@ -69,9 +71,6 @@ PursuitApp.Components.ShowSettings = React.createClass({
   },
   componentDidMount: function() {
     this.loadCoursesFromServer();
-  },
-  componentWillUnmount: function() {
-
   },
   handleChange: function(key) {
     return function (e) {

@@ -128,6 +128,7 @@ PursuitApp.Components.CourseBox = React.createClass({
   componentWillUnmount: function() {
     clearInterval(this.interval);
   },
+  // similar to updateFavStatus except for completed chapters. Called onClick in Chapter component.
   updateCompletedChapters: function(type, chapterid){
     data = {};
     data.id = chapterid;
@@ -146,13 +147,6 @@ PursuitApp.Components.CourseBox = React.createClass({
           console.error(this.props.url, status, err.toString());
         }.bind(this)
       });
-      // $.post("api/completed_chapters", {data})
-      //   .done(function(data) {
-      //     this.loadChaptersFromServer();
-      //   }.bind(this))
-      //   .fail(function (xhr, status, err) {
-      //     console.error(this.props.url, status, err.toString());
-      //   }.bind(this));
     } else {
       $.ajax({
         method: "DELETE",
@@ -162,9 +156,10 @@ PursuitApp.Components.CourseBox = React.createClass({
       }.bind(this));
     };
   },
+  // this function gets called on click in the CourseInfo component. It adds/deletes a playlist item.
   updateFavStatus: function(status){
     this.setState({playBool: status});
-    // data = {id: this.props.course_id};
+
     data = {};
     data.id = this.props.course_id;
 
@@ -182,13 +177,6 @@ PursuitApp.Components.CourseBox = React.createClass({
           console.error(this.props.url, status, err.toString());
         }.bind(this)
       });
-      // $.post("/api/playlists", {data})
-      //   .done(function (data) {
-      //     console.log(data);
-      //   })
-      //   .fail(function (xhr, status, err) {
-      //     console.error(this.props.url, status, err.toString());
-      //   });
     } else {
       $.ajax({
         method: "DELETE",
@@ -198,6 +186,7 @@ PursuitApp.Components.CourseBox = React.createClass({
       });
     };
   },
+  // Checks chapters to see how many are completed.
   chapterProgress: function() {
     count = 0;
     total = 0;

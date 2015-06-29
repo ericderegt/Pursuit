@@ -12,7 +12,6 @@ PursuitApp.Routers.AppRouter = Backbone.Router.extend({
 
     var collection = new PursuitApp.Collections.PlaylistCollection();
 
-      // var courseCollection = new PursuitApp.Collections.CourseCollection();
     PursuitApp.CoursesBox = React.render(
       <PursuitApp.Components.CoursesBox  playlist={collection} url="/api/courses" pollInterval={2000} />,
       document.getElementById('container')
